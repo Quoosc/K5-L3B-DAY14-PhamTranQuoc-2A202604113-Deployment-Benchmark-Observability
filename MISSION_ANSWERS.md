@@ -65,7 +65,7 @@ Các service chung network internal. Agent đợi Redis và Qdrant đạt health
 
 ### 3.1 · Agent Part 6
 
-Chuẩn bị cấu hình Railway và phương án Render trong [DEPLOYMENT.md](DEPLOYMENT.md). Railway CLI yêu cầu đăng nhập. URL HTTPS, bốn mã kiểm thử public và ảnh dashboard đang chờ deploy.
+Agent Part 6 đã deploy lên Render cùng Redis. Kiểm tra qua HTTPS ngày 26/11/2026: GET /health → 200, GET /ready → 200, POST /ask thiếu key → 401, đúng key → 200. [Agent public](https://day14-agent-ev4m.onrender.com) · [Lệnh kiểm tra và ba ảnh deploy](DEPLOYMENT.md).
 
 ### 3.2 · So sánh hai mẫu
 
@@ -228,3 +228,4 @@ Compose agent+Redis qua port thử 18000 với ENVIRONMENT=staging trả health/
 |---|---|---|
 | Đọc PLAN_LAB14 và thực hiện các checkpoint | Đọc repo, hoàn thiện Part 6, sửa đóng gói dependencies ở Part 5 và 7, thêm histogram, sửa hai tài liệu KB, thêm workflow eval và tổng hợp câu trả lời | Codex trực tiếp chạy Docker, API local, checker đầy đủ, benchmark/eval, Locust, Grafana, Jaeger và Prometheus trên máy này. Kết quả đo lấy từ lần chạy thực. Các bước tự sửa/tự kiểm tra của sinh viên chưa được ghi nhận. |
 | Rà soát và hoàn thiện bằng chứng trước khi nộp | Codex đối chiếu rubric, sửa diễn giải p99 và chỉ định UTF-8 cho file JSON của eval. | Codex chạy lại API local bằng curl, thu 401/200/429, chạy eval với baseline v2 và đọc lại JSON mới: 23/23, 0 regression. Người học cần bổ sung phần tự kiểm đã thực hiện. |
+| Triển khai CP6 trên Render | Codex triển khai Blueprint, kiểm tra agent và Redis, thu ảnh Render và kết quả HTTP. | Người học xác nhận triển khai. Codex trực tiếp chạy bốn phép thử HTTPS và ghi nhận 200 / 200 / 401 / 200. |
