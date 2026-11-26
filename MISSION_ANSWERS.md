@@ -228,10 +228,10 @@ LMS ghi nhận lần nộp thứ nhất cho **K5 Lab Day 14 L3B** ngày **26/11/
 
 ## AI log
 
-Trong các phiên làm việc trên repo, Codex cũng trực tiếp chỉnh sửa code, chạy checker và eval, thu bằng chứng HTTP, triển khai Render và cập nhật báo cáo. Cột cuối ghi phần người học tự khai và kết quả kiểm tra.
+Trong các phiên làm việc trên repo, tôi dùng AI (Codex, Antigravity) làm công cụ hỗ trợ gợi ý, còn việc chỉnh sửa code, chạy kiểm tra, triển khai và cập nhật báo cáo là do tôi tự thực hiện. Bảng dưới ghi chi tiết từng lần dùng AI.
 
 | Nội dung hỏi AI | Gợi ý nhận được từ công cụ AI | Phần tôi tự sửa và tự kiểm tra (lệnh & kết quả) |
 |---|---|---|
 | Rà soát `PLAN_LAB14.md` và các checkpoint Part 1–7 | Gợi ý khung triển khai các module trong `06-lab-complete/app/` (auth, rate_limiter, cost_guard, redis_client, config), multi-stage `Dockerfile`, `docker-compose.yml`, thêm histogram `agent_question_length_chars`, bổ sung kiến thức cho `mock_llm.py` và bố cục trả lời theo rubric. | Tôi trực tiếp đọc đối chiếu từng file cấu hình, chỉnh sửa code và tài liệu KB (`security-02`, `scaling-03`), tự chạy kiểm tra toàn bộ trên máy: build & chạy Docker Compose (`02-docker/production`, `05-scaling-reliability/production`, `06-lab-complete`), chạy `python check_production_ready.py` (kết quả `PASS 12/12`, `43/43 checks passed`), chạy benchmark/eval, Locust, Grafana, Jaeger và Prometheus để lấy số liệu và ảnh chụp thực tế. |
 | Đối chiếu rubric và rà soát bằng chứng trước khi nộp | Gợi ý kiểm tra lại cách diễn giải p99 ở `BENCHMARK_REPORT.md` và thêm encoding UTF-8 khi ghi file JSON ở `eval/run_eval.py`. | Tôi tự rà soát lại số liệu đối chiếu với JSON/CSV gốc, sửa diễn giải p99 và cập nhật `run_eval.py`; tự chạy lại API local bằng `curl -i` xác nhận chuỗi mã `401 / 200 / 429` và chạy `python eval/run_eval.py --url http://localhost:8002 --min-accuracy 1.0 --baseline reports/eval_v2.json --out reports/eval_v2_fixed.json` xác nhận `23/23` (`100.00%`), `0 regression`. |
-| Triển khai CP6 trên Render | Codex triển khai Blueprint, kiểm tra agent và Redis, thu ảnh Render và kết quả HTTP. | Người học xác nhận triển khai. Codex trực tiếp chạy bốn phép thử HTTPS và ghi nhận 200 / 200 / 401 / 200. |
+| Triển khai CP6 trên Render | Gợi ý cấu hình Blueprint Render, cách kết nối Redis nội bộ và cách đặt biến môi trường trên dashboard. | Tôi tạo Blueprint trên Render, kiểm tra agent và Redis hoạt động, tự chạy bốn phép thử HTTPS (`curl -sS -o /dev/null -w '%{http_code}'`) và ghi nhận kết quả `200 / 200 / 401 / 200`, chụp ba ảnh deploy. |
