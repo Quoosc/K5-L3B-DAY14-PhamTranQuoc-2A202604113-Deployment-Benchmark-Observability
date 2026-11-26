@@ -104,16 +104,43 @@ verify_api_key đọc header và đối chiếu AGENT_API_KEY. Để đổi key,
 
 Ở production, POST /auth/token với tài khoản demo trả **200**, token_type=bearer, expires_in_minutes=60. Gửi Authorization: Bearer bằng biến shell. Server xác thực tài khoản, ký JWT chứa role và thời điểm hết hạn, rồi kiểm tra chữ ký và hạn dùng trước khi xử lý /ask.
 
-20 lần POST /ask bằng JWT trả 10 mã 200 rồi 10 mã 429. Hai response đã rút gọn:
+Bằng chứng từ lần kiểm lại trên localhost bằng `curl -i`. Request đầu gọi develop khi thiếu key. Hai response tiếp theo lấy từ vòng 20 POST trên production bằng cùng JWT của student. Vòng lặp nhận 10 response 200 và 10 response 429.
 
 ~~~text
-HTTP 200
-{"question":"Hello","answer":"Agent đang hoạt động tốt! (mock response) Hỏi thêm câu hỏi đi nhé.","usage":{"requests_remaining":9,"budget_remaining_usd":0.000016}}
+HTTP/1.1 401 Unauthorized
+date: Thu, 26 Nov 2026 08:27:54 GMT
+server: uvicorn
+content-length: 67
+content-type: application/json
 
-HTTP 429
-X-RateLimit-Limit: 10
-X-RateLimit-Remaining: 0
-Retry-After: 59
+{"detail":"Missing API key. Include header: X-API-Key: <your-key>"}
+
+HTTP/1.1 200 OK
+date: Thu, 26 Nov 2026 08:27:56 GMT
+server: uvicorn
+content-length: 186
+content-type: application/json
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 1; mode=block
+referrer-policy: strict-origin-when-cross-origin
+
+{"question":"Hello","answer":"Tôi là AI agent được deploy lên cloud. Câu hỏi của bạn đã được nhận.","usage":{"requests_remaining":9,"budget_remaining_usd":1.8e-05}}
+
+HTTP/1.1 429 Too Many Requests
+date: Thu, 26 Nov 2026 08:27:57 GMT
+server: uvicorn
+x-ratelimit-limit: 10
+x-ratelimit-remaining: 0
+x-ratelimit-reset: 1795681738
+retry-after: 59
+content-length: 98
+content-type: application/json
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 1; mode=block
+referrer-policy: strict-origin-when-cross-origin
+
 {"detail":{"error":"Rate limit exceeded","limit":10,"window_seconds":60,"retry_after_seconds":59}}
 ~~~
 
@@ -200,3 +227,4 @@ Compose agent+Redis qua port thử 18000 với ENVIRONMENT=staging trả health/
 | Câu hỏi | Gợi ý và phần Codex thực hiện | Kiểm tra đã chạy |
 |---|---|---|
 | Đọc PLAN_LAB14 và thực hiện các checkpoint | Đọc repo, hoàn thiện Part 6, sửa đóng gói dependencies ở Part 5 và 7, thêm histogram, sửa hai tài liệu KB, thêm workflow eval và tổng hợp câu trả lời | Codex trực tiếp chạy Docker, API local, checker đầy đủ, benchmark/eval, Locust, Grafana, Jaeger và Prometheus trên máy này. Kết quả đo lấy từ lần chạy thực. Các bước tự sửa/tự kiểm tra của sinh viên chưa được ghi nhận. |
+| Rà soát và hoàn thiện bằng chứng trước khi nộp | Codex đối chiếu rubric, sửa diễn giải p99 và chỉ định UTF-8 cho file JSON của eval. | Codex chạy lại API local bằng curl, thu 401/200/429, chạy eval với baseline v2 và đọc lại JSON mới: 23/23, 0 regression. Người học cần bổ sung phần tự kiểm đã thực hiện. |

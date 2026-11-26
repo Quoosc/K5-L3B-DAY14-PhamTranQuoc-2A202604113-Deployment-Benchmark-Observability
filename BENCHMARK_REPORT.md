@@ -39,7 +39,7 @@ Concurrency tăng từ 10 đến 50 làm throughput tăng 2.74 lần và p95 vư
 | [0.03](reports/load_v2_slow_0.03.json) | 225.6 | 236.3 | 1703.1 |
 | [0.1](reports/load_v2_slow_0.1.json) | 389.3 | 1689.8 | 1730.2 |
 
-Ở slow rate 3%, p99 tăng gần 7 lần và average tăng khoảng 30 ms. Nhóm chậm rơi vào 1% đuôi, trong khi p95 vẫn thuộc nhóm nhanh. Ở mức 10%, p95 cũng vọt lên khoảng 1.69 s dù average vẫn dưới 0.4 s.
+Khi tăng slow rate từ 0 lên 3%, p99 tăng từ 249.2 lên 1703.1 ms, còn trung bình chỉ tăng 29.6 ms. p95 vẫn ở 236.3 ms. Trong lần đo này, p99 cho thấy độ trễ của nhóm request chậm rõ hơn p95. Khi tăng slow rate lên 10%, cả p95 cũng lên 1689.8 ms dù trung bình vẫn dưới 400 ms.
 
 ## 3. Benchmark chất lượng (develop)
 
