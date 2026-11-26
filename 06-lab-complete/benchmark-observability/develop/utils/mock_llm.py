@@ -78,6 +78,12 @@ KNOWLEDGE_BASE: list[tuple[list[str], str]] = [
     (["rate limit", "429"],
      "Rate limiting giới hạn số request mỗi client trong một cửa sổ thời gian, ví dụ 10 req/phút. "
      "Vượt giới hạn thì trả HTTP 429 Too Many Requests kèm header Retry-After."),
+    (["jwt", "api key"],
+     "API key là chuỗi bí mật server đối chiếu để nhận diện client. JWT là token chứa claims như "
+     "role và thời điểm hết hạn. Server xác minh chữ ký và hạn dùng trước khi chấp nhận token."),
+    (["hpa", "autoscaling", "horizontal pod autoscaler"],
+     "Kubernetes HPA (Horizontal Pod Autoscaler) điều chỉnh số replica dựa trên độ sử dụng CPU, "
+     "memory hoặc custom metrics như độ dài hàng đợi. HPA so giá trị đo với ngưỡng cấu hình."),
     (["stateless", "redis", "session"],
      "Stateless nghĩa là instance không giữ state trong memory; session được lưu ở Redis. "
      "Nhờ vậy có thể scale ngang nhiều instance sau load balancer."),
